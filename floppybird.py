@@ -68,10 +68,6 @@ def bird_animation():
 Birdflap = pygame.USEREVENT + 1
 pygame.time.set_timer(Birdflap,200)
 
-
-
-
-
 #****************** Game Score *********************
 def score_display(game_state):
     if game_state == 'main_state':
@@ -86,6 +82,7 @@ def score_display(game_state):
         high_score_surface = game_font.render(f'High score {int(high_score)}',False,(255,255,255))
         high_score_rect = high_score_surface.get_rect(center=(180,480))
         screen.blit(high_score_surface,high_score_rect)
+
 
 
 
@@ -121,6 +118,8 @@ pygame.init()
 #########Game Screen #################
 pixels = (360,600)
 screen = pygame.display.set_mode(pixels)
+icone = pygame.image.load('flappy.ico')
+icone = pygame.display.set_icon(icone)
 title = pygame.display.set_caption('Flappy Bird')
 
 
@@ -130,7 +129,8 @@ title = pygame.display.set_caption('Flappy Bird')
 clock = pygame.time.Clock()
 
 #Uplaoding the background image
-bg_suface  = pygame.image.load('assets/background-night.png').convert()
+bg_choice = random.choice(['assets/background-night.png','assets/background-day.png'])
+bg_suface  = pygame.image.load(bg_choice).convert()
 bg_suface = pygame.transform.scale(bg_suface,pixels)
                                       
 #Uploading the floor of the game 
@@ -141,14 +141,16 @@ floor_x_pos = 0
 
 
 #Uploading the player of the game ('It's a bird')
-
-bird_midflap = pygame.image.load('assets/bluebird-midflap.png').convert_alpha()
-bird_upflap = pygame.image.load('assets/bluebird-upflap.png').convert_alpha()
-bird_downflap = pygame.image.load('assets/bluebird-downflap.png').convert_alpha()
+bc = random.choice(['bluebird-','redbird-','yellowbird-'])
+bird_midflap = pygame.image.load('assets/'+bc+'midflap.png').convert_alpha()
+bird_upflap = pygame.image.load('assets/'+bc+'upflap.png').convert_alpha()
+bird_downflap = pygame.image.load('assets/'+bc+'downflap.png').convert_alpha()
 bird_frames = [bird_upflap,bird_midflap,bird_downflap]
 bird_index = 0
 bird_surface = bird_frames[bird_index]
 bird_rect = bird_surface.get_rect(center = (80,300))
+
+
 
 
 #Uploading pipes 
@@ -173,8 +175,7 @@ game_font = pygame.font.Font('04B_19.ttf',30)
 #***********Sounds ***********************
 flap_sound = pygame.mixer.Sound('sound/sfx_wing.wav')
 score_sound = pygame.mixer.Sound('sound/sfx_point.wav')
-hit_sound = pygame.mixer.Sound('sound/sfx_hit.wav')
-die_sound = pygame.mixer.Sound('sound/sfx_die.wav')
+hit_sound = pygame.mixer.Sound('sound/sfx_hit.wav') 
 
 #######Game loop #######
 while True:
@@ -230,6 +231,7 @@ while True:
     else:
         score_display('game_over')
         screen.blit(gameover_surface,gameover_rect)
+        
         
 #Floor
     floor_movement()
